@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  reverse-proxy:
+    container_name: traefik
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+
+  mysql:
+    container_name: mysql
+    image: "mysql:5.6"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+    volumes:
+      - /Users/thomas/storage/mysql56-datadir:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    labels:
+      - traefik.enable=false
+
+  whoami:
+    container_name: whoami
+    image: containous/whoami # A container that exposes an API to show its IP address
+    labels:
+      - "traefik.frontend.rule=Host:whoami.localhost"
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    labels:
+      - "traefik.frontend.rule=Host:adminer.localhost"
