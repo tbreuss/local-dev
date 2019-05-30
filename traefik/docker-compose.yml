@@ -5,6 +5,7 @@ services:
   reverse-proxy:
     container_name: traefik
     image: traefik # The official Traefik docker image
+    restart: always
     command: --api --docker # Enables the web UI and tells Traefik to listen to docker
     ports:
       - "80:80"     # The HTTP port
@@ -32,6 +33,7 @@ services:
   whoami:
     container_name: whoami
     image: containous/whoami # A container that exposes an API to show its IP address
+    restart: always
     labels:
       - "traefik.frontend.rule=Host:whoami.localhost"
 
