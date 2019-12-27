@@ -10,12 +10,14 @@ services:
     ports:
       - "80:80"     # The HTTP port
       - "8080:8080" # The Web UI (enabled by --api)
+    networks:
+      - web      
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
   mysql:
     container_name: mysql
-    image: "mysql:5.6"
+    image: "mysql:5.7"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -43,3 +45,6 @@ services:
     restart: always
     labels:
       - "traefik.frontend.rule=Host:adminer.localhost"
+
+networks:
+  web:
