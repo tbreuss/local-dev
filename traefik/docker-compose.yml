@@ -27,7 +27,7 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pass
     volumes:
-      - /Users/thomas/storage/mysql56-datadir:/var/lib/mysql
+      - ~/storage/mysql56-datadir:/var/lib/mysql
     ports:
       - "3306:3306"
     expose:
