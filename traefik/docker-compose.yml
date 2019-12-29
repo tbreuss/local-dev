@@ -33,7 +33,7 @@ services:
     expose:
       - "3306"
     labels:
-      - traefik.enable=false
+      - "traefik.tcp.routers.mysql.rule=HostSNI(`mysql.test`)"
 
   whoami:
     container_name: whoami
