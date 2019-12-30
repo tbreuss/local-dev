@@ -5,9 +5,10 @@ This is my lightweight local development environment using dnsmasq, Docker, and 
 
 ## Goals
 
-- Support local development of multiple docker services with API interdependencies
+- Support for local development of multiple docker services with API interdependencies
 - Ability to use *.test domain names from Mac host
 - Ability to use same domain names inside Docker containers
+- Support for HTTP and TCP routes 
 - No more messing around in /etc/hosts
 
 
@@ -20,7 +21,7 @@ This is my lightweight local development environment using dnsmasq, Docker, and 
 
 ## Solution
 
-- Create persistent loopback interface in macOS for IP 10.254.254.254
+- Create persistent loopback interface for IP 10.254.254.254
 - Install dnsmasq using IP 10.254.254.254 for nameserver and address target
 - Launch Traefik and other containers using Docker Compose
 
@@ -56,7 +57,7 @@ cat << EOF | sudo tee -a /Library/LaunchDaemons/ch.tebe.loopback1.plist
 EOF
 ~~~
 
-Launche service:
+Launch service:
 
 ~~~bash
 sudo launchctl load /Library/LaunchDaemons/ch.tebe.loopback1.plist
@@ -69,7 +70,7 @@ LaunchDaemons % sudo launchctl list | grep ch.tebe
 -	0	ch.tebe.loopback1
 ~~~
 
-Restart Mac:
+Restart Mac and check ifconfig:
 
 ~~~bash
 ifconfig lo0
@@ -92,19 +93,19 @@ brew update # Always update Homebrew and the formulae first
 brew install dnsmasq
 ~~~
 
-Start service:
+Start dnsmasq service:
 
 ~~~bash
 sudo brew services start dnsmasq
 ~~~
 
-Open `/usr/local/etc/dnsmasq.conf` and uncomment the following line:
+Open `/usr/local/etc/dnsmasq.conf` and add/uncomment the following line:
 
 ~~~bash
 conf-dir=/usr/local/etc/dnsmasq.d,*.conf
 ~~~
 
-Create your custom conf file:
+Create custom conf file:
 
 ~~~bash
 mkdir -p /usr/local/etc/dnsmasq.d
@@ -129,7 +130,7 @@ Create a file `/etc/resolver/test for our .test domains and add this line:
 nameserver 10.254.254.254
 ~~~
 
-Check that the new resolver is registered.
+Check that the resolver is registered.
 
 ~~~bash
 scutil --dns
@@ -174,7 +175,7 @@ docker-compose up
 Check that everything works as expected.
 
 Open `http://whoami.test` with your favorite browser. 
-You should see something like this:
+You should see something like:
 
 ~~~text
 Hostname: 7c29d434f709
