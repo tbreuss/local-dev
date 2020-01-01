@@ -112,7 +112,7 @@ mkdir -p /usr/local/etc/dnsmasq.d
 touch /usr/local/etc/dnsmasq.d/development.conf
 ~~~
 
-Add routing rule for .test domains:
+Add routing rule for *.test domain names:
 
 ~~~bash
 address=/.test/10.254.254.254 
@@ -124,7 +124,7 @@ Add custom resolver:
 sudo mkdir /etc/resolver
 ~~~
 
-Create a file `/etc/resolver/test for our .test domains and add this line:
+Create a file `/etc/resolver/test` for the *.test domain names and add this line:
 
 ~~~bash
 nameserver 10.254.254.254
@@ -143,12 +143,12 @@ resolver #8
 ...  
 ~~~
 
-Test the dnsmasq setup:
+Check the dnsmasq setup:
 
 ~~~bash
 ping -c 1 google.com # Make sure you can still access the outside world! 
 ping -c 1 mysite.test
-ping -c 1 foo.bar.testsite.box
+ping -c 1 my.other.site.test
 ~~~
 
 
