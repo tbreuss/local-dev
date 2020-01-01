@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
 
@@ -17,6 +17,8 @@ services:
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - default
 
   mysql:
     container_name: mysql
@@ -49,3 +51,7 @@ services:
     restart: always
     labels:
       - "traefik.http.routers.adminer.rule=Host(`adminer.test`)"
+
+networks:
+  default:
+    name: local-dev
