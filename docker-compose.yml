@@ -5,7 +5,7 @@ services:
   reverse-proxy:
     container_name: traefik
     # The official v2 Traefik docker image
-    image: traefik:v2.1
+    image: traefik:v2.3
     restart: always
     # Enables the web UI and tells Traefik to listen to docker
     command: --api.insecure=true --providers.docker
@@ -22,7 +22,7 @@ services:
 
   mysql:
     container_name: mysql
-    image: "mysql:5.7"
+    image: mysql:5.7
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -40,14 +40,14 @@ services:
   whoami:
     container_name: whoami
     # A container that exposes an API to show its IP address
-    image: containous/whoami
+    image: containous/whoami:v1.5.0
     restart: always
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.test`)"
 
   adminer:
     container_name: adminer
-    image: adminer
+    image: adminer:4.7
     restart: always
     labels:
       - "traefik.http.routers.adminer.rule=Host(`adminer.test`)"
