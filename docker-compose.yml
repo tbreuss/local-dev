@@ -5,7 +5,7 @@ services:
   reverse-proxy:
     container_name: traefik
     # The official v2 Traefik docker image
-    image: traefik:v2.3
+    image: traefik:v2.4
     restart: always
     # Enables the web UI and tells Traefik to listen to docker
     command: --api.insecure=true --providers.docker

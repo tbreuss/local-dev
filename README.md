@@ -15,8 +15,8 @@ This is my lightweight local development environment using dnsmasq, Docker, and 
 ## Environment
 
 - MacOS Catalina (10.15)
-- dnsmasq (2.80)
-- Docker Desktop for Mac (2.4)
+- dnsmasq (2.84)
+- Docker Desktop for Mac (3.1.0)
 
 
 ## Solution
@@ -33,7 +33,7 @@ At the time of writing this repo includes configs for the following Docker image
 - [adminer:4.7](https://hub.docker.com/_/adminer)
 - [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
 - [mysql:5.7](https://hub.docker.com/_/mysql)
-- [traefik:v2.3](https://hub.docker.com/_/traefik)
+- [traefik:v2.4](https://hub.docker.com/_/traefik)
 
 
 ## Create Persistent loopback interface in macOS Catalina
