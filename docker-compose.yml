@@ -47,7 +47,7 @@ services:
 
   adminer:
     container_name: adminer
-    image: adminer:4.7
+    image: adminer:4.8.1
     restart: always
     labels:
       - "traefik.http.routers.adminer.rule=Host(`adminer.test`)"
