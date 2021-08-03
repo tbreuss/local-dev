@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/var/www/localhost/htdocs
     labels:
-      - "traefik.http.routers.my-website.rule=Host(`php-73.test`)"
+      - "traefik.http.routers.php-73.rule=Host(`php-73.test`)"
     networks:
       - local-dev
 
