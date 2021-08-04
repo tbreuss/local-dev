@@ -20,6 +20,18 @@ services:
     networks:
       - default
 
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    logging:
+      driver: 'none' # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+    labels:
+      - "traefik.http.routers.mailhog.rule=Host(`mailhog.test`)"
+      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+
   mysql:
     container_name: mysql
     image: mysql:5.7
