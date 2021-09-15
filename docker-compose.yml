@@ -6,7 +6,9 @@ services:
     container_name: traefik
     image: traefik:v2.5
     restart: always
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
     ports:
       - "80:80"
       - "8080:8080"
@@ -21,8 +23,8 @@ services:
     logging:
       driver: none
     ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui
+      - "1025:1025" # smtp server
+      - "8025:8025" # web ui
     labels:
       - "traefik.http.routers.mailhog.rule=Host(`mailhog.test`)"
       - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
