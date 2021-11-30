@@ -12,11 +12,12 @@ This is my lightweight local development environment using dnsmasq, Docker, and 
 - No more messing around in /etc/hosts
 
 
-## Environment
+## Prerequisites
 
 - MacOS Catalina (10.15)
+- Homebrew (3.3)
 - dnsmasq (2.85)
-- Docker Desktop for Mac (3.5.2)
+- Docker Desktop for Mac (3.5)
 
 
 ## Solution
@@ -230,7 +231,7 @@ Check the same after rebooting your Mac.
 
 ## Thanks
 
-A big thanks to the authors of these helpful blog posts: 
+Thanks to the authors of these helpful blog posts: 
 
 - <https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a>
 - <https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/>
