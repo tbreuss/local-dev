@@ -2,6 +2,12 @@
 
 This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on MacOS Catalina.
 
+- [#goals](Goals)
+- [#prerequisites](Prerequisites)
+- [#solution](Solution)
+- [#included-docker-images](Included Docker Images)
+- [#thanks](Thanks)
+
 
 ## Goals
 
@@ -27,7 +33,7 @@ This is my lightweight local development environment using dnsmasq, Docker, and 
 - Launch Traefik and other containers using Docker Compose
 
 
-## Create Persistent loopback interface in macOS Catalina
+### Create Persistent loopback interface in macOS Catalina
 
 Create a "launchd" daemon that configures an additional IPv4 address.
 
@@ -80,7 +86,7 @@ lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 ~~~
 
 
-## Install and configure dnsmasq
+### Install and configure dnsmasq
 
 Install dnsmasq using Homebrew:
 
@@ -148,12 +154,12 @@ ping -c 1 my.other.site.test
 ~~~
 
 
-## Install Docker Desktop
+### Install Docker Desktop
 
 <https://www.docker.com/products/docker-desktop>
 
 
-## Launch Traefik and other containers
+### Launch Traefik and other containers
 
 Clone project from Github:
 
