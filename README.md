@@ -1,6 +1,6 @@
 # LOCAL-DEV
 
-This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on MacOS Catalina.
+> This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on MacOS Catalina.
 
 - [Goals](#goals)
 - [Prerequisites](#prerequisites)
