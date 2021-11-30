@@ -2,11 +2,11 @@
 
 This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on MacOS Catalina.
 
-- [#goals](Goals)
-- [#prerequisites](Prerequisites)
-- [#solution](Solution)
-- [#included-docker-images](Included Docker Images)
-- [#thanks](Thanks)
+- [Goals](#goals)
+- [Prerequisites](#prerequisites)
+- [Solution](#solution)
+- [Included Docker Images](#included-docker-images)
+- [Thanks](#thanks)
 
 
 ## Goals
