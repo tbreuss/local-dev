@@ -232,10 +232,10 @@ At the time of writing this repo includes configs for the following Docker image
 - [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
 - [mailhog/mailhog:v1.0.1](https://hub.docker.com/r/mailhog/mailhog)
 - [mysql:5.7](https://hub.docker.com/_/mysql)
-- [traefik:v2.5](https://hub.docker.com/_/traefik)
+- [traefik:v2.6](https://hub.docker.com/_/traefik)
 
 
-## Thanks
+## Links
 
 Thanks to the authors of these helpful blog posts: 
 
