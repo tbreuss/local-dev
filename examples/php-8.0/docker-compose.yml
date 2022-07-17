@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+
+  app:
+    image: php:8.0-apache
+    volumes:
+      - ./:/var/www/html
+    labels:
+      - "traefik.http.routers.php-80.rule=Host(`php-80.test`)"
+    networks:
+      - local-dev
+
+networks:
+  local-dev:
+    external: true
