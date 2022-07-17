@@ -1,12 +1,12 @@
 # LOCAL-DEV
 
-> This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on MacOS Catalina.
+> This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on macOS Monterey.
 
 - [Goals](#goals)
 - [Prerequisites](#prerequisites)
 - [Solution](#solution)
 - [Included Docker Images](#included-docker-images)
-- [Thanks](#thanks)
+- [Links](#links)
 
 
 ## Goals
@@ -20,10 +20,10 @@
 
 ## Prerequisites
 
-- MacOS Catalina (10.15)
-- Homebrew (3.3)
-- dnsmasq (2.85)
-- Docker Desktop for Mac (3.5)
+- macOS Monterey (12.4)
+- Homebrew (3.5)
+- dnsmasq (2.86)
+- Docker Desktop for Mac (4.10)
 
 
 ## Solution
@@ -33,7 +33,7 @@
 - Launch Traefik and other containers using Docker Compose
 
 
-### Create Persistent loopback interface in macOS Catalina
+### Create Persistent loopback interface in macOS Monterey
 
 Create a "launchd" daemon that configures an additional IPv4 address.
 
@@ -232,7 +232,7 @@ At the time of writing this repo includes configs for the following Docker image
 - [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
 - [mailhog/mailhog:v1.0.1](https://hub.docker.com/r/mailhog/mailhog)
 - [mysql:5.7](https://hub.docker.com/_/mysql)
-- [traefik:v2.6](https://hub.docker.com/_/traefik)
+- [traefik:v2.8](https://hub.docker.com/_/traefik)
 
 
 ## Links
@@ -241,4 +241,4 @@ Thanks to the authors of these helpful blog posts:
 
 - <https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a>
 - <https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/>
-- <https://blog.felipe-alfaro.com/2017/03/22/persistent-loopback-interfaces-in-mac-os-x/>
+- <https://felipealfaro.wordpress.com/2017/03/22/persistent-loopback-interfaces-in-mac-os-x/>
