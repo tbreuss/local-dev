@@ -242,3 +242,17 @@ Thanks to the authors of these helpful blog posts:
 - <https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a>
 - <https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/>
 - <https://felipealfaro.wordpress.com/2017/03/22/persistent-loopback-interfaces-in-mac-os-x/>
+
+
+
+## Notizen
+
+- <https://brianturchyn.net/basic-traefik-configuration-for-http-and-https/>
+- <https://github.com/domingoladron/traefik-https-example>
+- <https://medium.com/it-dead-inside/use-traefik-for-local-docker-https-4f3965d7d129>
+- <https://github.com/Heziode/traefik-v2-https-ssl-localhost>
+
+~~~
+mkcert -install
+mkcert -cert-file certs/local-cert.pem -key-file certs/local-key.pem "docker.test" "*.docker.test" "local.test" "*.local.test"
+~~~

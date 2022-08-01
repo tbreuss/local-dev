@@ -6,14 +6,17 @@ services:
     container_name: traefik
     image: traefik:v2.8
     restart: always
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker"
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "80:80"
       - "8080:8080"
+      - "443:443"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/config.yml:/etc/traefik/config.yml:ro
+      - ./certs:/etc/certs:ro    
     networks:
       - default
 
@@ -50,14 +53,23 @@ services:
     container_name: whoami
     image: containous/whoami:v1.5.0
     restart: always
+    security_opt:
+      - no-new-privileges:true    
     labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.test`)"
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami-http.rule=Host(`whoami.localhost.test`)"
+      - "traefik.http.routers.whoami-http.entrypoints=http"
+      - "traefik.http.routers.whoami-https.rule=Host(`whoami.localhost.test`)"
+      - "traefik.http.routers.whoami-https.entrypoints=https"
+      - "traefik.http.routers.whoami-https.tls=true"
 
   adminer:
     container_name: adminer
     image: adminer:4.8.1
     restart: always
     labels:
+      - "traefik.enable=true"
+      #- "traefik.docker.network=default"
       - "traefik.http.routers.adminer.rule=Host(`adminer.test`)"
 
 networks:
