@@ -1,0 +1,18 @@
+http:
+  routers:
+    traefik:
+      rule: "Host(`traefik.docker.test`)"
+      service: "api@internal"
+      tls:
+        domains:
+          - main: "docker.test"
+            sans:
+              - "*.docker.test"
+          - main: "localhost.test"
+            sans:
+              - "*.localhost.test"
+
+tls:
+  certificates:
+    - certFile: "/etc/certs/local-cert.pem"
+      keyFile: "/etc/certs/local-key.pem"
