@@ -15,7 +15,7 @@
 - Ability to use *.test domain names from Mac host
 - Ability to use same domain names inside Docker containers
 - Support for HTTP and TCP routes 
-- Support for HTTPS (without self-signed certificates so far)
+- Support for HTTPS (without self-signed certificate so far)
 - No more messing around in /etc/hosts
 
 
