@@ -15,15 +15,16 @@
 - Ability to use *.test domain names from Mac host
 - Ability to use same domain names inside Docker containers
 - Support for HTTP and TCP routes 
+- Support for HTTPS (without self-signed certificates so far)
 - No more messing around in /etc/hosts
 
 
 ## Prerequisites
 
-- macOS Monterey (12.4)
+- macOS Monterey (12.5)
 - Homebrew (3.5)
 - dnsmasq (2.86)
-- Docker Desktop for Mac (4.10)
+- Docker Desktop for Mac (4.11)
 
 
 ## Solution
@@ -180,48 +181,60 @@ Open `http://whoami.test` with your favorite browser.
 You should see something like:
 
 ~~~text
-Hostname: 7c29d434f709
+Hostname: eb7f1da188d7
 IP: 127.0.0.1
-IP: 172.18.0.2
-RemoteAddr: 172.18.0.5:49710
+IP: 172.18.0.5
+RemoteAddr: 172.18.0.2:45232
 GET / HTTP/1.1
 Host: whoami.test
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
 Accept-Encoding: gzip, deflate
 Accept-Language: de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7
-Cache-Control: max-age=0
+Dnt: 1
 Upgrade-Insecure-Requests: 1
 X-Forwarded-For: 172.18.0.1
 X-Forwarded-Host: whoami.test
 X-Forwarded-Port: 80
 X-Forwarded-Proto: http
-X-Forwarded-Server: edcc555d7d77
+X-Forwarded-Server: 73db93d4c8e8
 X-Real-Ip: 172.18.0.1
 ~~~
 
-Make cURL call from one docker container to another:
+Now, open `https://whoami.test` with your favorite browser.
+The browser displays a NET::ERR_CERT_AUTHORITY_INVALID warning or similar, but lets you proceed to the website if you choose to.
+You should see a similar output like above.
+
+Make a cURL call from one docker container to another:
 
 ~~~bash
-docker-compose exec adminer curl whoami.test
-Hostname: 7c29d434f709
+docker-compose exec adminer curl http://whoami.test
+Hostname: eb7f1da188d7
 IP: 127.0.0.1
-IP: 172.18.0.2
-RemoteAddr: 172.18.0.5:49710
+IP: 172.18.0.5
+RemoteAddr: 172.18.0.2:45238
 GET / HTTP/1.1
 Host: whoami.test
-User-Agent: curl/7.67.0
+User-Agent: curl/7.80.0
 Accept: */*
 Accept-Encoding: gzip
 X-Forwarded-For: 172.18.0.1
 X-Forwarded-Host: whoami.test
 X-Forwarded-Port: 80
 X-Forwarded-Proto: http
-X-Forwarded-Server: edcc555d7d77
+X-Forwarded-Server: 73db93d4c8e8
 X-Real-Ip: 172.18.0.1
 ~~~
- 
-Check the same after rebooting your Mac.
+
+Try the same using https:
+
+~~~bash
+docker-compose exec adminer curl --insecure https://whoami.test
+~~~
+
+You should see a similar output like above.
+
+Don't forget to check the same after rebooting your Mac.
 
 
 ## Included Docker Images
@@ -239,6 +252,7 @@ At the time of writing this repo includes configs for the following Docker image
 
 Thanks to the authors of these helpful blog posts: 
 
-- <https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a>
-- <https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/>
-- <https://felipealfaro.wordpress.com/2017/03/22/persistent-loopback-interfaces-in-mac-os-x/>
+- [Local Dev on Docker - Fun with DNS](https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a)
+- [Use dnsmasq instead of /etc/hosts](https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/)
+- [Persistent loopback interfaces in Mac OS X](https://felipealfaro.wordpress.com/2017/03/22/persistent-loopback-interfaces-in-mac-os-x/)
+- [Traefik Proxy 2.x and TLS 101](https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/)

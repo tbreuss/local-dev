@@ -9,9 +9,12 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker"
+      - "--entryPoints.http.address=:80"
+      - "--entryPoints.https.address=:443"
     ports:
       - "80:80"
       - "8080:8080"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -52,6 +55,8 @@ services:
     restart: always
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.test`)"
+      - "traefik.http.routers.whoami-secure.rule=Host(`whoami.test`)"
+      - "traefik.http.routers.whoami-secure.tls=true"
 
   adminer:
     container_name: adminer
