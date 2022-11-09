@@ -4,7 +4,7 @@ services:
 
   reverse-proxy:
     container_name: traefik
-    image: traefik:v2.8
+    image: traefik:v2.9
     restart: always
     command:
       - "--api.insecure=true"
@@ -22,7 +22,7 @@ services:
 
   mailhog:
     container_name: mailhog
-    image: mailhog/mailhog
+    image: mailhog/mailhog:v1.0
     logging:
       driver: none
     ports:
@@ -51,7 +51,7 @@ services:
 
   whoami:
     container_name: whoami
-    image: containous/whoami:v1.5.0
+    image: containous/whoami:v1.5
     restart: always
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.test`)"
@@ -60,7 +60,7 @@ services:
 
   adminer:
     container_name: adminer
-    image: adminer:4.8.1
+    image: adminer:4.8
     restart: always
     labels:
       - "traefik.http.routers.adminer.rule=Host(`adminer.test`)"
