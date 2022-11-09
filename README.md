@@ -241,11 +241,11 @@ Don't forget to check the same after rebooting your Mac.
 
 At the time of writing this repo includes configs for the following Docker images:
 
-- [adminer:4.8](https://hub.docker.com/_/adminer)
+- [adminer:4.8.1](https://hub.docker.com/_/adminer)
 - [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
 - [mailhog/mailhog:v1.0.1](https://hub.docker.com/r/mailhog/mailhog)
-- [mysql:5.7](https://hub.docker.com/_/mysql)
-- [traefik:v2.9](https://hub.docker.com/_/traefik)
+- [mysql:5.7.x](https://hub.docker.com/_/mysql)
+- [traefik:v2.9.x](https://hub.docker.com/_/traefik)
 
 
 ## Links
