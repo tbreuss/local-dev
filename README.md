@@ -21,10 +21,10 @@
 
 ## Prerequisites
 
-- macOS Monterey (12.5)
-- Homebrew (3.5)
-- dnsmasq (2.86)
-- Docker Desktop for Mac (4.11)
+- macOS Monterey (12.6)
+- Homebrew (3.6)
+- dnsmasq (2.87)
+- Docker Desktop for Mac (4.13)
 
 
 ## Solution
@@ -245,7 +245,7 @@ At the time of writing this repo includes configs for the following Docker image
 - [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
 - [mailhog/mailhog:v1.0.1](https://hub.docker.com/r/mailhog/mailhog)
 - [mysql:5.7](https://hub.docker.com/_/mysql)
-- [traefik:v2.8](https://hub.docker.com/_/traefik)
+- [traefik:v2.9](https://hub.docker.com/_/traefik)
 
 
 ## Links
