@@ -23,8 +23,8 @@
 
 - macOS Monterey (12.6)
 - Homebrew (3.6)
-- dnsmasq (2.87)
-- Docker Desktop for Mac (4.13)
+- dnsmasq (2.88)
+- Docker Desktop for Mac (4.15)
 
 
 ## Solution
