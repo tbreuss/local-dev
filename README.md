@@ -21,20 +21,23 @@
 
 ## Prerequisites
 
+This is my current set up:
+
 - macOS Monterey (12.6)
 - Homebrew (3.6)
 - dnsmasq (2.88)
-- Docker Desktop for Mac (4.15)
+- Docker Desktop for Mac (4.16)
 
+The instructions should also work with older versions.
 
 ## Solution
 
-- Create persistent loopback interface for IP 10.254.254.254
-- Install dnsmasq using IP 10.254.254.254 for nameserver and address target
-- Launch Traefik and other containers using Docker Compose
+1. Create persistent loopback interface for IP 10.254.254.254
+2. Install dnsmasq using IP 10.254.254.254 for nameserver and address target
+3. Launch Traefik and other containers using Docker Compose
 
 
-### Create Persistent loopback interface in macOS Monterey
+### 1. Create persistent loopback interface in macOS
 
 Create a "launchd" daemon that configures an additional IPv4 address.
 
@@ -87,7 +90,7 @@ lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 ~~~
 
 
-### Install and configure dnsmasq
+### 2. Install and configure dnsmasq
 
 Install dnsmasq using Homebrew:
 
@@ -155,12 +158,11 @@ ping -c 1 my.other.site.test
 ~~~
 
 
-### Install Docker Desktop
+### 3. Launch Traefik and other containers using Docker Compose
+
+Install Docker Desktop:
 
 <https://www.docker.com/products/docker-desktop>
-
-
-### Launch Traefik and other containers
 
 Clone project from Github:
 
@@ -241,11 +243,11 @@ Don't forget to check the same after rebooting your Mac.
 
 At the time of writing this repo includes configs for the following Docker images:
 
-- [adminer:4.8.1](https://hub.docker.com/_/adminer)
-- [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
-- [mailhog/mailhog:v1.0.1](https://hub.docker.com/r/mailhog/mailhog)
-- [mysql:5.7.x](https://hub.docker.com/_/mysql)
-- [traefik:v2.9.x](https://hub.docker.com/_/traefik)
+- [adminer:4.8](https://hub.docker.com/_/adminer)
+- [containous/whoami:v1.5](https://hub.docker.com/r/containous/whoami)
+- [mailhog/mailhog:v1.0](https://hub.docker.com/r/mailhog/mailhog)
+- [mysql:5.7](https://hub.docker.com/_/mysql)
+- [traefik:v2.9](https://hub.docker.com/_/traefik)
 
 
 ## Links
