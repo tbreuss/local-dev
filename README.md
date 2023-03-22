@@ -24,9 +24,9 @@
 This is my current set up:
 
 - macOS Monterey (12.6)
-- Homebrew (3.6)
-- dnsmasq (2.88)
-- Docker Desktop for Mac (4.16)
+- Homebrew (4.0)
+- dnsmasq (2.89)
+- Docker Desktop for Mac (4.17)
 
 The instructions should also work with older versions.
 
