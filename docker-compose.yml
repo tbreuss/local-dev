@@ -1,10 +1,8 @@
-version: '3.5'
-
 services:
 
   reverse-proxy:
     container_name: traefik
-    image: traefik:v2.11
+    image: traefik:v3.0
     restart: always
     command:
       - "--api.insecure=true"
