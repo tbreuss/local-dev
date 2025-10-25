@@ -1,0 +1,14 @@
+services:
+
+  app:
+    image: php:8.4-apache
+    volumes:
+      - ./:/var/www/html
+    labels:
+      - "traefik.http.routers.php-84.rule=Host(`php-84.test`)"
+    networks:
+      - local-dev
+
+networks:
+  local-dev:
+    external: true

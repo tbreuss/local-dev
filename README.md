@@ -23,10 +23,10 @@
 
 This is my current set up:
 
-- macOS Monterey (12.7)
-- Homebrew (4.2)
-- dnsmasq (2.90)
-- Docker Desktop for Mac (4.28)
+- macOS Tahoe (26.0)
+- Homebrew (4.6)
+- dnsmasq (2.91)
+- Docker Desktop for Mac (4.48)
 
 The instructions should also work with older versions.
 
@@ -243,16 +243,16 @@ Don't forget to check the same after rebooting your Mac.
 
 At the time of writing this repo includes configs for the following Docker images:
 
-- [adminer:4.8](https://hub.docker.com/_/adminer)
-- [containous/whoami:v1.5](https://hub.docker.com/r/containous/whoami)
-- [mailhog/mailhog:v1.0](https://hub.docker.com/r/mailhog/mailhog)
-- [mysql:5.7](https://hub.docker.com/_/mysql)
-- [traefik:v3.0](https://hub.docker.com/_/traefik)
+- [adminer:5.4.1](https://hub.docker.com/_/adminer)
+- [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
+- [mailhog/mailhog:v1.0.1](https://hub.docker.com/r/mailhog/mailhog)
+- [mysql:8.4.7](https://hub.docker.com/_/mysql)
+- [traefik:v3.5.3](https://hub.docker.com/_/traefik)
 
 
 ## Links
 
-Thanks to the authors of these helpful blog posts: 
+Thanks to the authors of these blog posts: 
 
 - [Local Dev on Docker - Fun with DNS](https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a)
 - [Use dnsmasq instead of /etc/hosts](https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/)
