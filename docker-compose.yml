@@ -2,19 +2,22 @@ services:
 
   reverse-proxy:
     container_name: traefik
-    image: traefik:v3.0
+    image: traefik:v3.5.3
     restart: always
     command:
       - "--api.insecure=true"
-      - "--providers.docker"
       - "--entryPoints.http.address=:80"
       - "--entryPoints.https.address=:443"
+      - "--log.level=ERROR"
+      - "--log.filePath=/logs/traefik.log"
+      - "--providers.docker"
     ports:
       - "80:80"
       - "8080:8080"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs/:/logs/
     networks:
       - default
 
@@ -32,20 +35,21 @@ services:
 
   mysql:
     container_name: mysql
-    image: mysql:5.7
+    image: mysql:8.4.7
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pass
     volumes:
-      - ~/storage/mysql56-datadir:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
     ports:
       - "3306:3306"
     expose:
       - "3306"
     labels:
       - "traefik.tcp.routers.mysql.rule=HostSNI(`mysql.test`)"
+      - "traefik.tcp.routers.mysql.tls=true"
 
   whoami:
     container_name: whoami
@@ -58,7 +62,7 @@ services:
 
   adminer:
     container_name: adminer
-    image: adminer:4.8.1
+    image: adminer:5.4.1
     restart: always
     labels:
       - "traefik.http.routers.adminer.rule=Host(`adminer.test`)"
