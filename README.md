@@ -1,6 +1,6 @@
 # LOCAL-DEV
 
-> This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on macOS Monterey.
+> This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on macOS Tahoe.
 
 - [Goals](#goals)
 - [Prerequisites](#prerequisites)
@@ -42,13 +42,13 @@ The instructions should also work with older versions.
 Create a "launchd" daemon that configures an additional IPv4 address.
 
 ~~~bash
-cat << EOF | sudo tee -a /Library/LaunchDaemons/ch.tebe.loopback1.plist
+cat << EOF | sudo tee -a /Library/LaunchDaemons/com.github.tbreuss.local-dev.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>ch.tebe.loopback1</string>
+    <string>com.github.tbreuss.local-dev</string>
     <key>ProgramArguments</key>
     <array>
         <string>/sbin/ifconfig</string>
@@ -66,14 +66,14 @@ EOF
 Launch service:
 
 ~~~bash
-sudo launchctl load /Library/LaunchDaemons/ch.tebe.loopback1.plist
+sudo launchctl load /Library/LaunchDaemons/com.github.tbreuss.local-dev.plist
 ~~~
 
 Make sure it works:
 
 ~~~bash
-LaunchDaemons % sudo launchctl list | grep ch.tebe
--	0	ch.tebe.loopback1
+LaunchDaemons % sudo launchctl list | grep local-dev
+-	0	com.github.tbreuss.local-dev
 ~~~
 
 Restart Mac and check ifconfig:
