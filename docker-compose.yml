@@ -1,6 +1,6 @@
 services:
 
-  reverse-proxy:
+  traefik:
     container_name: traefik
     image: traefik:v3.5.3
     restart: always
