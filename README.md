@@ -1,47 +1,45 @@
-# LOCAL-DEV
+# Local Development Environment
 
-> This is my lightweight local development environment using dnsmasq, Docker, and Traefik running on macOS Tahoe.
+> A lightweight local development environment for macOS using **dnsmasq**, **Docker**, and **Traefik** to enable seamless development of multiple services with API interdependencies.
 
+## Table of Contents
 - [Goals](#goals)
 - [Prerequisites](#prerequisites)
 - [Solution](#solution)
 - [Included Docker Images](#included-docker-images)
-- [Links](#links)
-
+- [References](#references)
 
 ## Goals
 
-- Support for local development of multiple docker services with API interdependencies
-- Ability to use *.test domain names from Mac host
-- Ability to use same domain names inside Docker containers
-- Support for HTTP and TCP routes 
-- Support for HTTPS (without self-signed certificate so far)
-- No more messing around in /etc/hosts
-
+- **Multi-Service Support**: Facilitate local development involving multiple Docker services with complex API dependencies.
+- **Unified DNS**: Use `*.test` domain names consistently on both the macOS host and inside Docker containers.
+- **Routing**: Support for both HTTP and TCP routing.
+- **HTTPS Ready**: HTTPS support (note: currently requires ignoring browser warnings for self-signed certificates).
+- **Zero Maintenance**: Eliminate the need to manually edit `/etc/hosts`.
 
 ## Prerequisites
 
-This is my current set up:
+This setup was tested with the following versions but should be compatible with earlier releases:
 
-- macOS Tahoe (26.0)
-- Homebrew (4.6)
-- dnsmasq (2.91)
-- Docker Desktop for Mac (4.48)
-
-The instructions should also work with older versions.
+- **OS**: macOS Tahoe (26.0)
+- **Package Manager**: Homebrew (4.6)
+- **DNS Server**: dnsmasq (2.91)
+- **Container Engine**: Docker Desktop for Mac (4.48)
 
 ## Solution
 
-1. Create persistent loopback interface for IP 10.254.254.254
-2. Install dnsmasq using IP 10.254.254.254 for nameserver and address target
-3. Launch Traefik and other containers using Docker Compose
+The setup consists of three main steps:
+1. Create a persistent loopback interface for IP `10.254.254.254`.
+2. Configure dnsmasq to route `*.test` domains to this IP.
+3. Launch Traefik and other containers via Docker Compose.
 
+### 1. Create a Persistent Loopback Interface on macOS
 
-### 1. Create persistent loopback interface in macOS
+We will create a `launchd` daemon to assign an additional IPv4 address (`10.254.254.254`) to the loopback interface (`lo0`), ensuring it persists after reboots.
 
-Create a "launchd" daemon that configures an additional IPv4 address.
+**Create the Launch Daemon:**
 
-~~~bash
+```bash
 cat << EOF | sudo tee -a /Library/LaunchDaemons/com.github.tbreuss.local-dev.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -61,187 +59,141 @@ cat << EOF | sudo tee -a /Library/LaunchDaemons/com.github.tbreuss.local-dev.pli
   </dict>
 </plist>
 EOF
-~~~
+```
 
-Launch service:
+**Load the Service:**
 
-~~~bash
+```bash
 sudo launchctl load /Library/LaunchDaemons/com.github.tbreuss.local-dev.plist
-~~~
+```
 
-Make sure it works:
+**Verify the Service:**
 
-~~~bash
-LaunchDaemons % sudo launchctl list | grep local-dev
--	0	com.github.tbreuss.local-dev
-~~~
+```bash
+sudo launchctl list | grep local-dev
+# Expected output: -	0	com.github.tbreuss.local-dev
+```
 
-Restart Mac and check ifconfig:
+**Check the Interface (after a reboot):**
 
-~~~bash
+```bash
 ifconfig lo0
-lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
-	options=1203<RXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
-	inet 127.0.0.1 netmask 0xff000000
-	inet6 ::1 prefixlen 128
-	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
-	inet 10.254.254.254 netmask 0xff000000
-	nd6 options=201<PERFORMNUD,DAD>
-~~~
+# Look for: inet 10.254.254.254 netmask 0xff000000
+```
 
+### 2. Install and Configure dnsmasq
 
-### 2. Install and configure dnsmasq
+**Install dnsmasq via Homebrew:**
 
-Install dnsmasq using Homebrew:
-
-~~~bash
-brew update # Always update Homebrew and the formulae first
+```bash
+brew update
 brew install dnsmasq
-~~~
-
-Start dnsmasq service:
-
-~~~bash
 sudo brew services start dnsmasq
-~~~
+```
 
-Open `/usr/local/etc/dnsmasq.conf` and add/uncomment the following line:
+**Configure dnsmasq:**
 
-~~~bash
+Open `/usr/local/etc/dnsmasq.conf` and ensure the following line is present (uncommented):
+
+```bash
 conf-dir=/usr/local/etc/dnsmasq.d,*.conf
-~~~
+```
 
-Create custom conf file:
+Create a custom configuration file:
 
-~~~bash
+```bash
 mkdir -p /usr/local/etc/dnsmasq.d
 touch /usr/local/etc/dnsmasq.d/development.conf
-~~~
+```
 
-Add routing rule for *.test domain names:
+Add the routing rule to direct all `*.test` domains to our loopback IP:
 
-~~~bash
-address=/.test/10.254.254.254 
-~~~
+```bash
+address=/.test/10.254.254.254
+```
 
-Add custom resolver:
+**Configure macOS Resolver:**
 
-~~~bash
-sudo mkdir /etc/resolver
-~~~
+Create a resolver file for the `.test` TLD so macOS knows to query dnsmasq for these domains:
 
-Create a file `/etc/resolver/test` for the *.test domain names and add this line:
+```bash
+sudo mkdir -p /etc/resolver
+echo "nameserver 10.254.254.254" | sudo tee /etc/resolver/test
+```
 
-~~~bash
-nameserver 10.254.254.254
-~~~
+**Verify the Setup:**
 
-Check that the resolver is registered.
+Check that the resolver is registered:
 
-~~~bash
+```bash
 scutil --dns
-...
-resolver #8
-  domain   : test
-  nameserver[0] : 10.254.254.254
-  flags    : Request A records
-  reach    : 0x00030002 (Reachable,Local Address,Directly Reachable Address)
-...  
-~~~
+# Look for a section "resolver #X" where domain is "test" and nameserver is "10.254.254.254"
+```
 
-Check the dnsmasq setup:
+**Test DNS resolution:**
 
-~~~bash
-ping -c 1 google.com # Make sure you can still access the outside world! 
+```bash
+# Ensure external domains still work
+ping -c 1 google.com
+
+# Test local resolution
 ping -c 1 mysite.test
 ping -c 1 my.other.site.test
-~~~
+```
 
+### 3. Launch Traefik and Containers via Docker Compose
 
-### 3. Launch Traefik and other containers using Docker Compose
+**Install Docker Desktop** (if not already installed):
+[Download Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
 
-Install Docker Desktop:
+**Clone the Project:**
 
-<https://www.docker.com/products/docker-desktop>
-
-Clone project from Github:
-
-~~~
+```bash
 git clone https://github.com/tbreuss/local-dev.git
-~~~
-
-Start services using Docker Compose:
-
-~~~
 cd local-dev
+```
+
+**Start Services:**
+
+```bash
 docker-compose up
-~~~
+```
 
-Check that everything works as expected.
+**Verification:**
 
-Open `http://whoami.test` with your favorite browser. 
-You should see something like:
+1. Open `http://whoami.test` in your browser.
+   You should see output similar to:
+   ```text
+   Hostname: eb7f1da188d7
+   IP: 127.0.0.1
+   IP: 172.18.0.5
+   RemoteAddr: 172.18.0.2:45232
+   GET / HTTP/1.1
+   Host: whoami.test
+   ...
+   X-Forwarded-Host: whoami.test
+   X-Forwarded-Proto: http
+   ```
 
-~~~text
-Hostname: eb7f1da188d7
-IP: 127.0.0.1
-IP: 172.18.0.5
-RemoteAddr: 172.18.0.2:45232
-GET / HTTP/1.1
-Host: whoami.test
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Accept-Encoding: gzip, deflate
-Accept-Language: de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7
-Dnt: 1
-Upgrade-Insecure-Requests: 1
-X-Forwarded-For: 172.18.0.1
-X-Forwarded-Host: whoami.test
-X-Forwarded-Port: 80
-X-Forwarded-Proto: http
-X-Forwarded-Server: 73db93d4c8e8
-X-Real-Ip: 172.18.0.1
-~~~
+2. Open `https://whoami.test`.
+   The browser will likely show a certificate warning (e.g., `NET::ERR_CERT_AUTHORITY_INVALID`). You can proceed past this warning. The output should be similar to the HTTP version.
 
-Now, open `https://whoami.test` with your favorite browser.
-The browser displays a NET::ERR_CERT_AUTHORITY_INVALID warning or similar, but lets you proceed to the website if you choose to.
-You should see a similar output like above.
+3. **Test Inter-Container Communication**:
+   Execute a request from one container to another (e.g., from `adminer`):
+   ```bash
+   docker-compose exec adminer curl http://whoami.test
+   ```
 
-Make a cURL call from one docker container to another:
+   For HTTPS (using `--insecure` to skip cert validation):
+   ```bash
+   docker-compose exec adminer curl --insecure https://whoami.test
+   ```
 
-~~~bash
-docker-compose exec adminer curl http://whoami.test
-Hostname: eb7f1da188d7
-IP: 127.0.0.1
-IP: 172.18.0.5
-RemoteAddr: 172.18.0.2:45238
-GET / HTTP/1.1
-Host: whoami.test
-User-Agent: curl/7.80.0
-Accept: */*
-Accept-Encoding: gzip
-X-Forwarded-For: 172.18.0.1
-X-Forwarded-Host: whoami.test
-X-Forwarded-Port: 80
-X-Forwarded-Proto: http
-X-Forwarded-Server: 73db93d4c8e8
-X-Real-Ip: 172.18.0.1
-~~~
-
-Try the same using https:
-
-~~~bash
-docker-compose exec adminer curl --insecure https://whoami.test
-~~~
-
-You should see a similar output like above.
-
-Don't forget to check the same after rebooting your Mac.
-
+**Important:** Always verify that DNS resolution and container routing still work after rebooting your Mac.
 
 ## Included Docker Images
 
-At the time of writing this repo includes configs for the following Docker images:
+At the time of writing, this repository includes configurations for the following images:
 
 - [adminer:5.4.1](https://hub.docker.com/_/adminer)
 - [containous/whoami:v1.5.0](https://hub.docker.com/r/containous/whoami)
@@ -249,10 +201,9 @@ At the time of writing this repo includes configs for the following Docker image
 - [mysql:8.4.7](https://hub.docker.com/_/mysql)
 - [traefik:v3.5.3](https://hub.docker.com/_/traefik)
 
+## References
 
-## Links
-
-Thanks to the authors of these blog posts: 
+Special thanks to the authors of the following guides which inspired this setup:
 
 - [Local Dev on Docker - Fun with DNS](https://medium.com/@williamhayes/local-dev-on-docker-fun-with-dns-85ca7d701f0a)
 - [Use dnsmasq instead of /etc/hosts](https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/)
