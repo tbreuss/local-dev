@@ -93,17 +93,17 @@ sudo brew services start dnsmasq
 
 **Configure dnsmasq:**
 
-Open `/usr/local/etc/dnsmasq.conf` and ensure the following line is present (uncommented):
+Open `$(brew --prefix)/etc/dnsmasq.conf` and ensure the following line is present (uncommented):
 
 ```bash
-conf-dir=/usr/local/etc/dnsmasq.d,*.conf
+conf-dir=$(brew --prefix)/etc/dnsmasq.d,*.conf
 ```
 
 Create a custom configuration file:
 
 ```bash
-mkdir -p /usr/local/etc/dnsmasq.d
-touch /usr/local/etc/dnsmasq.d/development.conf
+mkdir -p "$(brew --prefix)/etc/dnsmasq.d"
+touch "$(brew --prefix)/etc/dnsmasq.d/development.conf"
 ```
 
 Add the routing rule to direct all `*.test` domains to our loopback IP:
@@ -156,7 +156,7 @@ cd local-dev
 **Start Services:**
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 **Verification:**
@@ -181,12 +181,12 @@ docker-compose up
 3. **Test Inter-Container Communication**:
    Execute a request from one container to another (e.g., from `adminer`):
    ```bash
-   docker-compose exec adminer curl http://whoami.test
+   docker compose exec adminer curl http://whoami.test
    ```
 
    For HTTPS (using `--insecure` to skip cert validation):
    ```bash
-   docker-compose exec adminer curl --insecure https://whoami.test
+   docker compose exec adminer curl --insecure https://whoami.test
    ```
 
 **Important:** Always verify that DNS resolution and container routing still work after rebooting your Mac.
